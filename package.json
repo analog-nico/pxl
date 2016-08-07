@@ -32,7 +32,7 @@
   },
   "homepage": "https://github.com/analog-nico/pxl#readme",
   "engines": {
-    "node": ">=4"
+    "node": ">=6"
   },
   "dependencies": {
   },
