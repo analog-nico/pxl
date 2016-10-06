@@ -1,6 +1,6 @@
 # pxl
 
-Access counting for any Express-served url - e.g. for a tracking pixel in emails
+Access counting for any Express-served url - e.g. for a [tracking pixel](https://en.wikipedia.org/wiki/Web_beacon) in emails
 
 [![Build Status](https://img.shields.io/travis/analog-nico/pxl/master.svg?style=flat-square&maxAge=2592000)](https://travis-ci.org/analog-nico/pxl)
 [![Coverage Status](https://img.shields.io/coveralls/analog-nico/pxl.svg?style=flat-square&maxAge=2592000)](https://coveralls.io/r/analog-nico/pxl)

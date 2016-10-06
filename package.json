@@ -2,7 +2,7 @@
   "name": "pxl",
   "version": "0.0.1",
   "description": "Access counting for any Express-served url - e.g. for a tracking pixel in emails",
-  "main": "./lib/index.js",
+  "main": "./index.js",
   "scripts": {
     "test": "./node_modules/.bin/gulp ci"
   },
@@ -35,17 +35,20 @@
     "node": ">=6"
   },
   "dependencies": {
+    "lodash": "^4.16.3"
   },
   "devDependencies": {
     "chai": "~3.5.0",
     "chalk": "~1.1.3",
+    "express": "^4.14.0",
     "gulp": "~3.9.1",
     "gulp-coveralls": "~0.1.4",
     "gulp-eslint": "~3.0.1",
     "gulp-istanbul": "~1.0.0",
-    "gulp-mocha": "~3.0.0",
+    "gulp-mocha": "~3.0.1",
+    "request-promise-native": "^1.0.3",
     "rimraf": "~2.5.4",
     "run-sequence": "~1.2.2",
-    "sinon": "~1.17.5"
+    "sinon": "~1.17.6"
   }
 }
