@@ -240,6 +240,7 @@ describe('Pxl', () => {
                                 expect(logPxlSpy.called).to.eql(true)
                                 expect(logPxlFailedSpy.calledOnce).to.eql(true)
                                 expect(logPxlFailedSpy.args[0][0].message).to.eql('Pxl unknown')
+                                expect(logPxlFailedSpy.args[0][1]).is.a('string')
 
                             })
 
