@@ -432,4 +432,130 @@ describe('Pxl', () => {
 
     })
 
+    describe('should process short links and tracking pxls combined', () => {
+
+        it('pxl on short url', (done) => {
+
+            let pxl = initPxl()
+            let logPxlSpy = sinon.spy(pxl, 'logPxl')
+
+            let app = express()
+
+            app.use(pxl.trackPxl)
+
+            app.get('/shorty/:linkId', pxl.redirect)
+
+            app.get('/ok', (req, res) => {
+                res.send('ok')
+            })
+
+            let existingPxl = null
+            let existingLink = null
+
+            let server = app.listen(3030, () => {
+
+                new Promise((resolve) => { resolve() })
+                    .then(() => {
+
+                        return pxl.createPxl()
+                            .then((createdPxl) => {
+                                existingPxl = createdPxl
+                            })
+
+                    })
+                    .then(() => {
+
+                        return pxl.shorten('http://localhost:3030/ok')
+                            .then((shortenedLink) => {
+                                existingLink = shortenedLink
+                            })
+
+                    })
+                    .then(() => {
+
+                        return request(`http://localhost:3030/shorty/${ existingLink.linkId }?pxl=${ existingPxl.pxl }`)
+                            .then((body) => {
+
+                                expect(body).to.eql('ok')
+                                expect(logPxlSpy.calledOnce).to.eql(true)
+
+                            })
+
+                    })
+                    .then(() => {
+                        server.close()
+                        done()
+                    })
+                    .catch((err) => {
+                        server.close()
+                        done(err)
+                    })
+
+            })
+
+        })
+
+        it('pxl on long url', (done) => {
+
+            let pxl = initPxl()
+            let logPxlSpy = sinon.spy(pxl, 'logPxl')
+
+            let app = express()
+
+            app.use(pxl.trackPxl)
+
+            app.get('/shorty/:linkId', pxl.redirect)
+
+            app.get('/ok', (req, res) => {
+                res.send('ok')
+            })
+
+            let existingPxl = null
+            let existingLink = null
+
+            let server = app.listen(3030, () => {
+
+                new Promise((resolve) => { resolve() })
+                    .then(() => {
+
+                        return pxl.createPxl()
+                            .then((createdPxl) => {
+                                existingPxl = createdPxl
+                            })
+
+                    })
+                    .then(() => {
+
+                        return pxl.shorten(`http://localhost:3030/ok?pxl=${ existingPxl.pxl }`)
+                            .then((shortenedLink) => {
+                                existingLink = shortenedLink
+                            })
+
+                    })
+                    .then(() => {
+
+                        return request(`http://localhost:3030/shorty/${ existingLink.linkId }`)
+                            .then((body) => {
+
+                                expect(body).to.eql('ok')
+                                expect(logPxlSpy.calledOnce).to.eql(true)
+
+                            })
+
+                    })
+                    .then(() => {
+                        server.close()
+                        done()
+                    })
+                    .catch((err) => {
+                        server.close()
+                        done(err)
+                    })
+
+            })
+
+        })
+
+    })
+
 })
