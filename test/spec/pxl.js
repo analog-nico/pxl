@@ -241,6 +241,7 @@ describe('Pxl', () => {
                                 expect(logPxlFailedSpy.calledOnce).to.eql(true)
                                 expect(logPxlFailedSpy.args[0][0].message).to.eql('Pxl unknown')
                                 expect(logPxlFailedSpy.args[0][1]).is.a('string')
+                                expect(logPxlFailedSpy.args[0][2]).to.eql('/ok?pxl=impossible%20pxl')
 
                             })
 

@@ -85,7 +85,7 @@ let Pxl = require('pxl')
 let pxl = new Pxl({
     persistenceLayer: yourPersistenceLayer,
     queryParam: 'pxl',
-    logPxlFailed(err, pxlCode) {}
+    logPxlFailed(err, pxlCode, url) {}
 })
 ```
 
@@ -130,7 +130,7 @@ let app = express()
 app.use(pxl.trackPxl)
 ```
 
-The middleware will check all requests that pass through for the pxl code in `req.query` and bump up its counter accordingly. If any error occurs durings its operation the `logPxlFailed` will be called without interfering with serving the request.
+The middleware will check all requests that pass through for the pxl code in `req.query` and bump up its counter accordingly. If any error occurs durings its operation the `logPxlFailed` callback will be called without interfering with serving the request.
 
 ### Link Shortening
 
@@ -190,6 +190,8 @@ If you want to debug a test you should use `gulp test-without-coverage` to run a
 
 ## Change History
 
+- v0.0.3 (upcoming)
+    - Extended `logPxlFailed` signature
 - v0.0.2 (2016-10-06)
     - Extended `logPxlFailed` signature
 - v0.0.1 (2016-10-05)
