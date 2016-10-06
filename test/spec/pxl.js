@@ -145,23 +145,27 @@ describe('Pxl', () => {
                     pxl.persistenceLayer.nextResponse = 'Error'
 
                     return pxl.createPxl({ id: 3 })
-                        .then(() => {
-                            throw new Error('Expected Error')
-                        })
-                        .catch(() => {
-                            // Expected
-                        })
+                        .then(
+                            () => {
+                                throw new Error('Expected Error')
+                            },
+                            () => {
+                                // Expected
+                            }
+                        )
 
                 })
                 .then(() => {
 
                     return pxl.logPxl('impossible pxl')
-                        .then(() => {
-                            throw new Error('Expected Error')
-                        })
-                        .catch(() => {
-                            // Expected
-                        })
+                        .then(
+                            () => {
+                                throw new Error('Expected Error')
+                            },
+                            () => {
+                                // Expected
+                            }
+                        )
 
                 })
                 .then(() => {
@@ -334,23 +338,27 @@ describe('Pxl', () => {
                     pxl.persistenceLayer.nextResponse = 'Error'
 
                     return pxl.shorten('some link 3')
-                        .then(() => {
-                            throw new Error('Expected Error')
-                        })
-                        .catch(() => {
-                            // Expected
-                        })
+                        .then(
+                            () => {
+                                throw new Error('Expected Error')
+                            },
+                            () => {
+                                // Expected
+                            }
+                        )
 
                 })
                 .then(() => {
 
                     return pxl.unshorten('impossible linkId')
-                        .then(() => {
-                            throw new Error('Expected Error')
-                        })
-                        .catch(() => {
-                            // Expected
-                        })
+                        .then(
+                            () => {
+                                throw new Error('Expected Error')
+                            },
+                            () => {
+                                // Expected
+                            }
+                        )
 
                 })
                 .then(() => {
