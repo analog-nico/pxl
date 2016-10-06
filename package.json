@@ -4,7 +4,10 @@
   "description": "Access counting for any Express-served url - e.g. for a tracking pixel in emails",
   "main": "./index.js",
   "scripts": {
-    "test": "./node_modules/.bin/gulp ci"
+    "test": "./node_modules/.bin/gulp ci",
+    "test-publish": "./node_modules/.bin/gulp ci-no-cov",
+    "publish-please": "publish-please",
+    "prepublish": "publish-please guard"
   },
   "repository": {
     "type": "git",
@@ -46,7 +49,8 @@
     "gulp-eslint": "~3.0.1",
     "gulp-istanbul": "~1.0.0",
     "gulp-mocha": "~3.0.1",
-    "request-promise-native": "^1.0.3",
+    "publish-please": "~2.2.0",
+    "request-promise-native": "~1.0.3",
     "rimraf": "~2.5.4",
     "run-sequence": "~1.2.2",
     "sinon": "~1.17.6"
