@@ -2,10 +2,10 @@
 
 Access counting for any Express-served url - e.g. for a [tracking pixel](https://en.wikipedia.org/wiki/Web_beacon) in emails
 
-[![Build Status](https://img.shields.io/travis/analog-nico/pxl.svg?style=flat-square&maxAge=2592000)](https://travis-ci.org/analog-nico/pxl)
-[![Coverage Status](https://img.shields.io/coveralls/analog-nico/pxl.svg?style=flat-square&maxAge=2592000)](https://coveralls.io/r/analog-nico/pxl)
-[![Dependency Status](https://img.shields.io/david/analog-nico/pxl.svg?style=flat-square&maxAge=2592000)](https://david-dm.org/analog-nico/pxl)
-[![Known Vulnerabilities](https://snyk.io/test/npm/pxl/badge.svg?style=flat-square&maxAge=2592000)](https://snyk.io/test/npm/pxl)
+[![Build Status](https://img.shields.io/travis/analog-nico/pxl.svg?style=flat-square)](https://travis-ci.org/analog-nico/pxl)
+[![Coverage Status](https://img.shields.io/coveralls/analog-nico/pxl.svg?style=flat-square)](https://coveralls.io/r/analog-nico/pxl)
+[![Dependency Status](https://img.shields.io/david/analog-nico/pxl.svg?style=flat-square)](https://david-dm.org/analog-nico/pxl)
+[![Known Vulnerabilities](https://snyk.io/test/npm/pxl/badge.svg?style=flat-square)](https://snyk.io/test/npm/pxl)
 
 ## What for?
 
@@ -22,7 +22,7 @@ You want analytics about your recipients, right?!
 When the recipient opens the email, the email client will download the logo image. If you do the following you can easily answer the question:
 
 1. Serve the logo image with your Express app, e.g. using [`serve-static`](https://www.npmjs.com/package/serve-static). If you don't have a suitable image in your html email, use a 1x1 transparent pixel image instead.
-2. Make sure caching is disabled for this image. You may use [`nocache`](https://www.npmjs.com/package/nocache) to achieve this.
+2. Unless you shorten the image url as described for question 3, make sure caching is disabled for this image. You may use [`nocache`](https://www.npmjs.com/package/nocache) to achieve this.
 3. Extend the image url by the query `?pxl=<created pxl>`. Your html markup then contains: `<img src="http://mysite.com/img/logo.png?pxl=<created pxl>" alt="logo">`
 4. This library provides:
     - A `createPxl(...)` function to generate the new code that you use for `<created pxl>` and 
@@ -36,10 +36,11 @@ Of course with Google Analytics and the clever use of `utm_source` you can track
 Assuming you host your own blog with your Express app you can do the following to easily answer the question:
 
 1. Extend the link to the post on your own blog by the query `?pxl=<created pxl>`. Your html markup then contains: `<a href="http://mysite.com/blog/10-things-you-didnt-know?pxl=<created pxl>">10 things you didn't know</a>`
-2. This library provides:
+2. Unless you shorten the link as described for question 3, make sure caching is disabled for this link. You may use [`nocache`](https://www.npmjs.com/package/nocache) to achieve this.
+3. This library provides:
     - A `createPxl(...)` function to generate the new code that you use for `<created pxl>` and 
     - A `trackPxl` middleware to bump up a counter each time the blog post url is accessed &ndash; that is the recipient clicks on the link to the post on your own blog.
-3. Since you are really clever you generate a new pxl code for each email you send out so you can track if the link was clicked by each recipient individually.
+4. Since you are really clever you generate a new pxl code for each email you send out so you can track if the link was clicked by each recipient individually.
 
 ### Question 3: Did the recipient click on the link to the post on an external blog?
 
@@ -191,6 +192,7 @@ If you want to debug a test you should use `gulp test-without-coverage` to run a
 ## Change History
 
 - v0.0.3 (upcoming)
+    - `redirect` middleware disables caching for reliable tracking of requests to shortened urls
     - Extended `logPxlFailed` signature
 - v0.0.2 (2016-10-06)
     - Extended `logPxlFailed` signature

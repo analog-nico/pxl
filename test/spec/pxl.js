@@ -428,6 +428,22 @@ describe('Pxl', () => {
 
                     })
                     .then(() => {
+
+                        return request({
+                            uri: `http://localhost:3030/shorty/${ existingLink.linkId }`,
+                            resolveWithFullResponse: true,
+                            followRedirect: false,
+                            simple: false
+                        })
+                            .then((response) => {
+
+                                expect(response.statusCode).to.eql(302)
+                                expect(response.headers['expires']).to.eql('0')
+
+                            })
+
+                    })
+                    .then(() => {
                         server.close()
                         done()
                     })
