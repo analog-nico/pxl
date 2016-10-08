@@ -277,6 +277,81 @@ describe('Pxl', () => {
 
         })
 
+        it('with a referenced pxl', () => {
+
+            let pxl = initPxl()
+            let refdPxl = null
+
+            return new Promise((resolve) => { resolve() })
+                .then(() => {
+
+                    return pxl.createPxl({
+                        id: 1,
+                        ref: 'does not exist' // to verify that ref chaining is not possible - if it was logPxl would throw an error
+                    })
+                        .then((createdPxl) => {
+
+                            expect(createdPxl.pxl).to.be.a('string')
+                            expect(createdPxl.pxl.length).to.eql(8)
+
+                            expect(createdPxl).to.eql({
+                                pxl: createdPxl.pxl,
+                                metadata: {
+                                    id: 1
+                                },
+                                ref: 'does not exist',
+                                count: 0
+                            })
+
+                            refdPxl = createdPxl.pxl
+
+                            return pxl.createPxl({ id: 2, ref: refdPxl })
+
+                        })
+                        .then((createdPxl) => {
+
+                            expect(createdPxl.pxl).to.be.a('string')
+                            expect(createdPxl.pxl.length).to.eql(8)
+
+                            expect(createdPxl).to.eql({
+                                pxl: createdPxl.pxl,
+                                metadata: {
+                                    id: 2
+                                },
+                                ref: refdPxl,
+                                count: 0
+                            })
+
+                            return pxl.logPxl(createdPxl.pxl)
+
+                        })
+                        .then((loggedPxl) => {
+
+                            expect(loggedPxl).to.eql({
+                                pxl: loggedPxl.pxl,
+                                metadata: {
+                                    id: 2
+                                },
+                                ref: refdPxl,
+                                count: 1
+                            })
+
+                            expect(pxl.persistenceLayer.pxls[refdPxl]).to.eql({
+                                pxl: refdPxl,
+                                metadata: {
+                                    id: 1
+                                },
+                                ref: 'does not exist',
+                                count: 1
+                            })
+
+                        })
+
+                })
+
+
+        })
+
     })
 
     describe('should manage short urls', () => {

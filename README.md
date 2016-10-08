@@ -133,6 +133,29 @@ app.use(pxl.trackPxl)
 
 The middleware will check all requests that pass through for the pxl code in `req.query` and bump up its counter accordingly. If any error occurs durings its operation the `logPxlFailed` callback will be called without interfering with serving the request.
 
+#### Pxl References
+
+``` js
+pxl.createPxl({ for: 'open tracking' })
+    .then((openTrackingPxl) => {
+
+        pxl.createPxl({
+            for: 'click tracking',
+            ref: openTrackingPxl.pxl // <-- The click tracking pxl references the open tracking pxl
+        })
+            .then((clickTrackingPxl) => {
+            
+                pxl.logPxl(clickTrackingPxl.pxl) // --> BOTH pxls' counters get bumped up
+            
+            })
+
+    })
+```
+
+The example follows a common use case relevant for email tracking: Usually, the url of an image of the html email is used to track if the recipient opens the email. However, the recipient's email client may be configured to not load any images. In that case the open tracking won't work. But once the recipient clicks on a link in the email we know that the email was opened. With the `ref` property the `clickTrackingPxl` will automatically log the `openTrackingPxl` as well.
+
+Chaining pxls with the `ref` property is not possible. Only the direct reference will be resolved.
+
 ### Link Shortening
 
 ``` js
@@ -192,6 +215,7 @@ If you want to debug a test you should use `gulp test-without-coverage` to run a
 ## Change History
 
 - v0.0.3 (upcoming)
+    - Introduced the `ref` property to [reference another pxl](#pxl-references)
     - `redirect` middleware disables caching for reliable tracking of requests to shortened urls
     - Extended `logPxlFailed` signature
 - v0.0.2 (2016-10-06)

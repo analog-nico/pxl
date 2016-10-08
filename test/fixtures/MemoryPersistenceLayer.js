@@ -46,6 +46,11 @@ class MemoryPersistenceLayer extends PersistenceLayerBase {
                 count: 0
             }
 
+            if (metadata && metadata.ref) {
+                this.pxls[pxl].ref = metadata.ref
+                delete metadata.ref
+            }
+
             resolve(this.pxls[pxl])
 
         })
