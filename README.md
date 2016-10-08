@@ -214,7 +214,7 @@ If you want to debug a test you should use `gulp test-without-coverage` to run a
 
 ## Change History
 
-- v0.0.3 (upcoming)
+- v0.0.3 (2016-10-08)
     - Introduced the `ref` property to [reference another pxl](#pxl-references)
     - `redirect` middleware disables caching for reliable tracking of requests to shortened urls
     - Extended `logPxlFailed` signature
