@@ -72,6 +72,7 @@ npm install pxl --save
 Since `pxl` does not include a persistence layer you either need to implement your own or you install an extended package instead. The following packages currently exist that include a ready-to-use persistence layer:
 
 - [`pxl-mongodb`](https://github.com/analog-nico/pxl-mongodb)
+- [`pxl-dynamodb`](https://github.com/raphaelmun/pxl-dynamodb)
 - If you implement a package for another database I will gladly list it here!
 
 ## Usage
