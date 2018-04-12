@@ -6,6 +6,7 @@ let MemoryPersistenceLayer = require('../fixtures/MemoryPersistenceLayer.js')
 let Pxl = require('../../')
 let request = require('request-promise-native')
 let sinon = require('sinon')
+let TwoBucketsMemcache = require('two-buckets-memcache')
 
 
 describe('Pxl', () => {
@@ -349,6 +350,142 @@ describe('Pxl', () => {
 
                 })
 
+
+        })
+
+        it('and debounce a double click by the user', (done) => {
+
+            let pxl = initPxl()
+
+            new Promise((resolve) => { resolve() })
+                .then(() => {
+
+                    return pxl.createPxl({ id: 1 })
+                        .then((createdPxl) => {
+
+                            expect(createdPxl.pxl).to.be.a('string')
+                            expect(createdPxl.pxl.length).to.eql(8)
+
+                            expect(createdPxl).to.eql({
+                                pxl: createdPxl.pxl,
+                                metadata: {
+                                    id: 1
+                                },
+                                count: 0
+                            })
+
+                            return pxl.logPxl(createdPxl.pxl) // First click
+                                .then((loggedPxl) => {
+
+                                    expect(loggedPxl).to.eql({
+                                        pxl: loggedPxl.pxl,
+                                        metadata: {
+                                            id: 1
+                                        },
+                                        count: 1
+                                    })
+
+                                    return pxl.logPxl(createdPxl.pxl) // Second click
+
+                                })
+                                .then((loggedPxl) => {
+
+                                    expect(loggedPxl).to.eql(undefined) // eslint-disable-line no-undefined
+
+                                })
+
+                        })
+
+                })
+                .then(() => {
+                    done()
+                })
+                .catch((err) => {
+                    done(err)
+                })
+
+        })
+
+        it('and debounce a double click by the user and continue to track clicks done later', (done) => {
+
+            let pxl = initPxl()
+            pxl.logPxlCache = new TwoBucketsMemcache(10)
+
+            new Promise((resolve) => { resolve() })
+                .then(() => {
+
+                    return pxl.createPxl({ id: 1 })
+                        .then((createdPxl) => {
+
+                            expect(createdPxl.pxl).to.be.a('string')
+                            expect(createdPxl.pxl.length).to.eql(8)
+
+                            expect(createdPxl).to.eql({
+                                pxl: createdPxl.pxl,
+                                metadata: {
+                                    id: 1
+                                },
+                                count: 0
+                            })
+
+                            return pxl.logPxl(createdPxl.pxl) // First click
+                                .then((loggedPxl) => {
+
+                                    expect(loggedPxl).to.eql({
+                                        pxl: loggedPxl.pxl,
+                                        metadata: {
+                                            id: 1
+                                        },
+                                        count: 1
+                                    })
+
+                                    return pxl.logPxl(createdPxl.pxl) // Second click
+
+                                })
+                                .then((loggedPxl) => {
+
+                                    expect(loggedPxl).to.eql(undefined) // eslint-disable-line no-undefined
+
+                                    return createdPxl
+
+                                })
+
+                        })
+
+                })
+                .then((createdPxl) => {
+
+                    return new Promise((resolve) => {
+
+                        setTimeout(() => {
+                            resolve(createdPxl)
+                        }, 30)
+
+                    })
+
+                })
+                .then((createdPxl) => {
+
+                    return pxl.logPxl(createdPxl.pxl) // Click done later
+                        .then((loggedPxl) => {
+
+                            expect(loggedPxl).to.eql({
+                                pxl: loggedPxl.pxl,
+                                metadata: {
+                                    id: 1
+                                },
+                                count: 2
+                            })
+
+                        })
+
+                })
+                .then(() => {
+                    done()
+                })
+                .catch((err) => {
+                    done(err)
+                })
 
         })
 
