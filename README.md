@@ -215,6 +215,9 @@ If you want to debug a test you should use `gulp test-without-coverage` to run a
 
 ## Change History
 
+- v0.0.4 (2018-04-12)
+    - Debouncing `.logPxl(...)` calls to filter double clicks by the user. This can happen when a logging call is tied to a button the user can click.
+    - **Breaking Change**: If you call `.logPxl(...)` directly instead of using the `trackPxl` middleware then `.logPxl(...)` calls which get debounced resolve to `undefined`.
 - v0.0.3 (2016-10-08)
     - Introduced the `ref` property to [reference another pxl](#pxl-references)
     - `redirect` middleware disables caching for reliable tracking of requests to shortened urls

@@ -1,6 +1,6 @@
 {
   "name": "pxl",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Access counting for any Express-served url - e.g. for a tracking pixel in emails",
   "main": "./index.js",
   "scripts": {
